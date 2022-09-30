@@ -1,0 +1,78 @@
+<% layout('layouts/boilerplate')%>
+<div class="row">
+    <h1 class="text-center">Edit Attraction</h1>
+    <div class="col-md-6 offset-md-3">
+        <form action="/attractions/<%=attraction._id%>?_method=PUT" method="POST" novalidate class="validated-form"
+            enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" type="text" id="title" name="attraction[title]"
+                    value="<%=attraction.title %>" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="location">Location</label>
+                <input class="form-control" type="text" id="location" name="attraction[location]"
+                    value="<%=attraction.location %>" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="price">Attraction Price</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="price-label">$</span>
+                    <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price"
+                        aria-describedby="price-label" name="attraction[price]" value="<%=attraction.price %>"
+                        required>\<div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" type="text" id="description" name="attraction[description]"
+                    required><%= attraction.description%></textarea>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <!--File-input-button2. customize the file input button from bootstrap.
+                File-input-button2. also it has to work with bs-custom-file-input package from npm to show file names in the upload bar
+                File-input-button2. use the CDN link without downloading in boilerplate and running code in validateForms under public/javascripts-->
+                <div class="form-file custom-file">
+                    <!--Image7.2 first set multiple to be able to upload multiple images-->
+                    <input type="file" class="form-file-input" id="image" name="image" multiple>
+                    <label class="form-file-label" for="image">
+                        <span class="form-file-text custom-file-label">Add more image(s)...</span>
+                        <span class="form-file-button">Browse</span>
+                    </label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <!--Image8.3 list all current images in the database-->
+                <% attraction.images.forEach(function(img, i) {  %>
+                <!--Image8.4 under model/attractions, a new virtual property called thumbnail was added, so calling it could change the width of the image-->
+                <img src="<%=img.thumbnail %>" class="img-thumbnail" alt="">
+                <div class="form-check-inline">
+                    <!--Image8.5 add selected images value: filename into the name: deleteImages array -->
+                    <!--Image8.5 also don't forget the check camground schema by Joi to make sure it could be valadiated since new deleteImages added-->
+                    <input type="checkbox" id="image-<%=i%>" name="deleteImages[]" value="<%=img.filename%>">
+                </div>
+                <!--Image8.6 link the label to the checkbox above by appying the same id-->
+                <label for="image-<%=i%>">Delete?</label>
+                <% })%>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-info">Update Attraction</button>
+            </div>
+        </form>
+        <a href="/attractions/<%= attraction._id%>">Back To Attraction</a>
+
+    </div>
+</div>
